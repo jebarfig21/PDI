@@ -8,7 +8,7 @@ public class Imagen{
   this.img       = img ;
   this.ancho     = ancho;
   this.alto      = alto;
-  this.dimension = img.width* img.height;
+  this.dimension = img.width * img.height;
   }
   
   Imagen(PImage img){
@@ -91,7 +91,7 @@ public class Imagen{
       int rojo= (int)red(c);
       int verde= (int)green(c);
       int azul= (int)blue(c);
-      int minimo = max(rojo,verde,azul);
+      int minimo = min(rojo,verde,azul);
       img.pixels[i] = color(minimo,minimo,minimo);
      }
   }
@@ -148,9 +148,5 @@ public class Imagen{
    
   }
 }
-  
-  
-  
-  
-  
+   
 }
