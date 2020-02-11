@@ -2,18 +2,13 @@ PImage img;
 boolean imageSelected = false; 
 String path_imagen="#ffffff";
 int clicks=7;
-Boton boton0 ;
-Boton boton1 ;
-Boton boton2 ;
-Boton boton3 ;
-Boton boton4 ;
-Boton boton5 ;
-Boton boton6 ;
-Boton boton7 ;
+Boton boton0, boton1 ,boton2 ,boton3 ;
+Boton boton4, boton5 ,boton6 ,boton7 ;
 
 
 void setup() {
-  background(240);
+  
+  background(245);
   fullScreen();
   selectInput("Seleccione una imagen:", "fileSelected");
   boton0 = new Boton(1000,100,"Blur");
@@ -24,14 +19,14 @@ void setup() {
   boton5 = new Boton(1100,220,"Promedio");
   boton6 = new Boton(1000,280,"Mediana");
   boton7 = new Boton(1100,280,"Original");
-   
+     
 }
  
 void fileSelected(File selection) {
   if (selection == null) {
-    println("Window was closed or the user hit cancel.");
+    println("Programa terminado");
   } else {
-    println("User selected " + selection.getAbsolutePath());
+    println("Imagen seleccionada " + selection.getAbsolutePath());
     path_imagen  = selection.getAbsolutePath();
     imageSelected = true;
     }
@@ -39,26 +34,21 @@ void fileSelected(File selection) {
 
 
 void draw() {
-  if(!imageSelected){
-    int a=1;
-  }
-  else{
-    
-  img = loadImage(path_imagen);
-  Imagen imagen = new Imagen(img, width ,height);
+  if(imageSelected){ 
+    img = loadImage(path_imagen);
+    Imagen imagen = new Imagen(img, width ,height);
   
-  if(clicks==0)imagen.blur();
-  if(clicks==1)imagen.motionBlur();
-  if(clicks==2)imagen.bordes();
-  if(clicks==3)imagen.sharpen();
-  if(clicks==4)imagen.emboss();
-  /*
-  if(clicks==5)imagen.filtroGrisMin();
-  if(clicks==6)imagen.filtroRGB("R");
-  */
-  if(clicks==7)loadImage(path_imagen); 
-  image(img, 0, 0,width-400,height);
-  
+    if(clicks==0)imagen.blur();
+    if(clicks==1)imagen.motionBlur();
+    if(clicks==2)imagen.bordes();
+    if(clicks==3)imagen.sharpen();
+    if(clicks==4)imagen.emboss();
+    if(clicks==5)imagen.promedio();
+    /*
+    if(clicks==6)imagen.filtroRGB("R");
+    */
+    if(clicks==7)loadImage(path_imagen); 
+    image(img, 0, 0,width-400,height);
   }
 }
 
