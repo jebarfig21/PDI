@@ -1,225 +1,162 @@
 public class Imagen{
-  private PImage img;  
-  private int ancho;
-  private int alto;
-  private int dimension;
-  
-  Imagen(PImage img, int ancho, int alto){
-  this.img       = img ;
-  this.ancho     = ancho;
-  this.alto      = alto;
-  this.dimension = img.width * img.height;
-  }
-  
-  Imagen(PImage img){
-  this.img       = img;
-  this.ancho     = 900;
-  this.alto      = 500;
-  this.dimension = img.width* img.height;
-  }
-  
-  public int getAncho(){return this.ancho;}
-  public int getAlto(){return this.alto;}
-  public PImage getImagen(){return this.img;}
+    private PImage img;  
+    private int ancho;
+    private int alto;
+    private PImage imgAux;
+    private int dimension;
     
-  public float[] convolucion(int y, int x,float[][] kernel){
-      float[] c = new float[3];
-      int offset = kernel[0].length/2;
-      c[0] = 0; // La suma del color rojo
-      c[1] = 0; // La suma del color verde
-      c[2] = 0; // La suma del color azul
-      
-      for (int ky = (-1)*offset; ky <= offset; ky++) {
-        for (int kx = (-1)*offset; kx <= offset; kx++) {
-          // Calculamos la posicion de cada pixel adyacente
-          int pos = (y + ky)*img.width + (x + kx);
-          pos = constrain(pos,0,img.pixels.length-1);
-          // Multiply adjacent pixels based on the kernel values
-          c[0] += kernel[ky+offset][kx+offset] * red(img.pixels[pos]);;
-          c[1] += kernel[ky+offset][kx+offset] * green(img.pixels[pos]);;
-          c[2] += kernel[ky+offset][kx+offset] * blue(img.pixels[pos]);;
-        }
-      }
-      return c;
-}
-
-public void blur(){
-  float factor = 1.0/13.0;
-  float bias = 0.0;
-  /*float[][] kernel = {{ 0, .2, 0 }, 
-                      { .2, .2, .2 }, 
-                      { 0, .2, 0 }};
-    */
-    float[][] kernel = {{0,0,1,0,0}, 
-                        {0,1,1,1,0},
-                        {1,1,1,1,1},
-                        {0,1,1,1,0},
-                        {0,0,1,0,0}};
+    Imagen(PImage img, int ancho, int alto){
+    	this.img       = img ;
+	    this.ancho     = ancho;
+	    this.alto      = alto;
+	    this.imgAux = img;
+	    this.dimension= img.width*img.height;	
+    }
     
-  //img.loadPixels();
-  int offset = kernel[0].length;
-  // Create an opaque image of the same size as the original
-  // Loop through every pixel in the image
-  for (int y = offset; y < img.height-offset; y++) {   // Skip top and bottom edges
-    for (int x = offset; x < img.width-offset; x++) {  // Skip left and right edges
-      float[] c = convolucion(y,x,kernel);
-      c[0]= factor * c[0] + bias;
-      c[1]= factor * c[1] + bias;
-      c[2]= factor * c[2] + bias;
-      img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
+    public float[] convolucion(int y, int x,float[][] kernel){
+	    imgAux.loadPixels();
+	    float[] c = {0,0,0};//Iniciamos el arreglo que guarda el valor R,G,B total 
+	    int msize = kernel[0].length; //Tamaño de la matriz
+	    for (int kx = 0; kx < msize; kx++) {
+	      for (int ky = 0; ky < msize; ky++) {
+		    // Calculamos la posicion de cada pixel adyacente
+		    int xloc = x+kx;
+		    int yloc = y+ky;
+		    int pos = ((yloc*img.width + xloc)+dimension) % dimension;
+		
+		    // Guardamos la suma de RGB de cada pixel adyacente
+		    c[0] += kernel[kx][ky] * red(imgAux.pixels[pos]);
+		    c[1] += kernel[kx][ky] * green(imgAux.pixels[pos]);
+		    c[2] += kernel[kx][ky] * blue(imgAux.pixels[pos]);
+	      }
+	    }
+	    return c;
     }
+    
+    /*
+     *Metodo que le aplica la convolución a cada pixel de la imagen y despues le aplica el filtro
+     */
+    public void pintaImagen(float factor, float bias, float[][] kernel){
+	   for (int y = 0; y < img.height; y++) {   
+	     for (int x = 0; x < img.width; x++) {  
+		    float[] c = convolucion(y,x,kernel);
+		    c[0]= factor * c[0] + bias;
+		    c[1]= factor * c[1] + bias;
+		    c[2]= factor * c[2] + bias;
+		    img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
+	      }
+	    }
+    }
+    
+  public void blur(){
+	  float factor = 1.0/13.0;
+	  float bias = 0.0;
+	  float[][] kernel = {{0,0,1,0,0}, 
+			                  {0,1,1,1,0},
+			                  {1,1,1,1,1},
+			                  {0,1,1,1,0},
+			                  {0,0,1,0,0}};
+	
+	  pintaImagen(factor,bias,kernel);
   }
-  
-  // State that there are changes to edgeImg.pixels[]
-  //img.updatePixels();
- 
- }
- 
-public void motionBlur(){
- float factor = 1.0 / 9.0;
- float bias = 0.0;
-  float[][] matriz={
-  {1,0,0,0,0,0,0,0,0},
-  {0,1,0,0,0,0,0,0,0},
-  {0,0,1,0,0,0,0,0,0},
-  {0,0,0,1,0,0,0,0,0},
-  {0,0,0,0,1,0,0,0,0},
-  {0,0,0,0,0,1,0,0,0},
-  {0,0,0,0,0,0,1,0,0},
-  {0,0,0,0,0,0,0,1,0},
-  {0,0,0,0,0,0,0,0,1}};
-  
-  getImagen().loadPixels();
-  int offset = matriz[0].length;
-  // Create an opaque image of the same size as the original
-  // Loop through every pixel in the image
-  for (int y = offset; y < img.height-offset; y++) {   // Skip top and bottom edges
-    for (int x = offset; x < img.width-offset; x++) {  // Skip left and right edges
-      float[] c = convolucion(y,x,matriz);
-      c[0]= factor * c[0] + bias;
-      c[1]= factor * c[1] + bias;
-      c[2]= factor * c[2] + bias;
-      img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
-    }
+    
+  public void motionBlur(){
+	  float factor = 1.0 / 9.0;
+	  float bias = 0.0;
+	  float[][] matriz={{1,0,0,0,0,0,0,0,0},
+		              	  {0,1,0,0,0,0,0,0,0},
+			                {0,0,1,0,0,0,0,0,0},
+			                {0,0,0,1,0,0,0,0,0},
+			                {0,0,0,0,1,0,0,0,0},
+			                {0,0,0,0,0,1,0,0,0},
+			                {0,0,0,0,0,0,1,0,0},
+			                {0,0,0,0,0,0,0,1,0},
+			                {0,0,0,0,0,0,0,0,1}};
+	  pintaImagen(factor,bias,matriz);  
   }
-  
- img.updatePixels();
-
-}
-
-
-public void bordes(){
-  
-float factor = 1.0;
-float bias = 0.0;
-float[][] matriz={
-   {-1,  0,  0,  0,  0},
-   {0,  -2,  0,  0,  0},
-   {0,   0,  6,  0,  0},
-   {0,   0,  0, -2,  0},
-   {0,   0,  0,  0, -1},
-  
-};
-
-  getImagen().loadPixels();
-  int offset = matriz[0].length;
-  // Create an opaque image of the same size as the original
-  // Loop through every pixel in the image
-  for (int y = offset; y < img.height-offset; y++) {   // Skip top and bottom edges
-    for (int x = offset; x < img.width-offset; x++) {  // Skip left and right edges
-      float[] c = convolucion(y,x,matriz);
-      c[0]= factor * c[0] + bias;
-      c[1]= factor * c[1] + bias;
-      c[2]= factor * c[2] + bias;
-      img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
-    }
+    
+  //EDGES  
+  public void bordes(){
+	  float factor = 1.0;
+	  float bias = 0.0;
+	  float[][] matriz={{-1, -1, -1, -1, -1},
+			                {-1, -1, -1, -1, -1},
+			                {-1, -1, 24, -1, -1},
+			                {-1, -1, -1, -1, -1},
+			                {-1, -1, -1, -1, -1}};
+	  pintaImagen(factor,bias,matriz);
   }
-  
-  
-}
-
-public void sharpen(){
-  
-  float factor = 1.0;
-  float bias = 0.0;
-  float[][] matriz={
-  {1, 1, 1},
-  {1,-7, 1},
-  {1, 1, 1}};
-
-  getImagen().loadPixels();
-  int offset = matriz[0].length;
-  // Create an opaque image of the same size as the original
-  // Loop through every pixel in the image
-  for (int y = offset; y < img.height-offset; y++) {   // Skip top and bottom edges
-    for (int x = offset; x < img.width-offset; x++) {  // Skip left and right edges
-      float[] c = convolucion(y,x,matriz);
-      c[0]= factor * c[0] + bias;
-      c[1]= factor * c[1] + bias;
-      c[2]= factor * c[2] + bias;
-      img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
+    
+  public void sharpen(){
+	  float factor = 1.0;
+	  float bias = 0.0;
+	  float[][] matriz={{-1,-1,-1,-1,-1},
+		              	  {-1,-1,-1,-1,-1},
+			                {-1,-1,25,-1,-1},
+			                {-1,-1,-1,-1,-1},
+			                {-1,-1,-1,-1,-1}};
+	  pintaImagen(factor,bias,matriz);
     }
-  }   
- img.updatePixels();
-}
-
-public void emboss(){
-  float factor = 1.0;
-  float bias = 0.0;
-  
-  float[][] matriz={
-  {-1,-1,-1,-1, 0},
-  {-1,-1,-1, 0, 1},
-  {-1,-1, 0, 1, 1},
-  {-1, 0, 1, 1, 1},
-  { 0, 1, 1, 1, 1}};
-
-  int offset = matriz[0].length;
-  getImagen().loadPixels();
-  
-  for (int y = offset; y < img.height-offset; y++) {   // Skip top and bottom edges
-    for (int x = offset; x < img.width-offset; x++) {  // Skip left and right edges
-      float[] c = convolucion(y,x,matriz);
-      c[0]= factor * c[0] + bias;
-      c[1]= factor * c[1] + bias;
-      c[2]= factor * c[2] + bias;
-      img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
-    }
+    
+  public void emboss(){
+      float factor = 1.0;
+      float bias = 128.0;
+      float[][] matriz={{-1,-1,-1,-1, 0},
+			                  {-1,-1,-1, 0, 1},
+			                  {-1,-1, 0, 1, 1},
+			                  {-1, 0, 1, 1, 1},
+			                  { 0, 1, 1, 1, 1}};
+      pintaImagen(factor,bias,matriz);
   }
- img.updatePixels();
-}
-
-
-
-public void promedio(){
-  float factor = 1.0/9;
-  float bias = 0;
-  
-  float[][] matriz={
-  {1,1, 1},
-  {1, 1, 1},
-  {1, 1, 1}};
-
-  int offset = matriz[0].length;
-  getImagen().loadPixels();
-  
-  for (int y = offset; y < img.height-offset; y++) {   // Skip top and bottom edges
-    for (int x = offset; x < img.width-offset; x++) {  // Skip left and right edges
-      float[] c = convolucion(y,x,matriz);
-      c[0]= factor * c[0] + bias;
-      c[1]= factor * c[1] + bias;
-      c[2]= factor * c[2] + bias;
-      img.pixels[y*img.width + x] = color(c[0],c[1],c[2]);
-    }
+    
+  public void promedio(){
+	  float factor = 1.0/9;
+	  float bias = 0;
+	  float[][] matriz={{1,1,1},
+		              	  {1,1,1},
+			                {1,1,1}};
+	  pintaImagen(factor,bias,matriz);
   }
- img.updatePixels();
-}
-
-
-/*
-
-public void mediana(){
-}
-
- */  
+    
+  /*
+   *Funciones auxiliares correspondientes a la obtencion del filtro mediana
+   */
+  public float[][] medianaAux(int y, int x,float[][] kernel){
+	  float[][] c = new float[3][9];
+	  int msize = kernel[0].length;
+	  int it = 0;
+	  for (int ky = 0 ; ky < msize; ky++) {
+	    for (int kx = 0; kx < msize; kx++) {
+		  // Calculamos la posicion de cada pixel adyacente
+		  int pos = (y + ky)*img.width + (x + kx);
+		  pos = constrain(pos,0,img.pixels.length-1);
+		  // Guardamos la suma de RGB de cada pixel adyacente
+		  c[0][it] = kernel[ky][kx] * red(img.pixels[pos]);;
+		  c[1][it] = kernel[ky][kx] * green(img.pixels[pos]);;
+		  c[2][it] = kernel[ky][kx] * blue(img.pixels[pos]);;
+		  it++;
+	    }
+	  }
+	  return c;
+  }
+    
+  
+  public void pintaMediana(float[][] kernel){
+	for (int y = 0; y < img.height; y++) {   
+	    for (int x = 0; x < img.width; x++) {  
+		float[][] c = medianaAux(y,x,kernel);
+		c[0]= sort(c[0]);
+		c[1]= sort(c[1]);
+		c[2]= sort(c[2]);
+		img.pixels[y*img.width + x] = color(c[0][4],c[1][4],c[2][4]);
+	    }
+	}
+    }
+    
+    public void mediana(){
+	float[][] matriz={{1,1,1},
+			  {1,1,1},
+			  {1,1,1}};
+	pintaMediana(matriz);
+    }
 }

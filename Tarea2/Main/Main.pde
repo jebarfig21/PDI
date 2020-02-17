@@ -44,9 +44,7 @@ void draw() {
     if(clicks==3)imagen.sharpen();
     if(clicks==4)imagen.emboss();
     if(clicks==5)imagen.promedio();
-    /*
-    if(clicks==6)imagen.filtroRGB("R");
-    */
+    if(clicks==6)imagen.mediana();
     if(clicks==7)loadImage(path_imagen); 
     image(img, 0, 0,width-400,height);
   }
