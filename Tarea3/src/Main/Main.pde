@@ -9,30 +9,40 @@ IFButton b4, b5 ,b6 ,b7,b8 ;
 GUIController c;
 IFLabel l,l1; 
 IFTextField t,t1;
-Imagen imagen;
-  
+Imagen imagen; 
 void setup() {
   PFont mono = createFont("Courier", 20);
   textFont(mono);
   background(250);
   fullScreen();
+  int lineaX1=int(width*.83); 
+  int lineaX2=int(width*.88);
+  int lineaY1=int(height*.15);
+  int lineaY2=int(height*.18);
+  int lineaY3=int(height*.21);
+  int lineaY4=int(height*.24);
+  int lineaY5=int(height*.27);
+  int lineaY6=int(height*.30);
+  int lineaY7=int(height*.50);
+  int lineaY8=int(height*.60);
+  
   selectInput("Seleccione una imagen:", "fileSelected");
   c = new GUIController(this);
-  t = new IFTextField("Text Field", 1000, 500, 200);
-  l = new IFLabel("Resolución, Se recomienda un rango 3-15\nDefault=8", 1000, 470);
-  t1 = new IFTextField("Text Field", 1000, 600, 200);
-  l1 = new IFLabel("Texto(Filtro Texto)", 1000, 580);
-  b0 = new IFButton("M con Color", 1000, 100);
-  b1 = new IFButton("M en Gris", 1100, 100);
-  b2 = new IFButton("Letras Gris", 1000, 160);
-  b3 = new IFButton("Letras Color", 1100, 160);
-  b4 = new IFButton("Letras ByN", 1000, 220);
-  b5 = new IFButton("Texto", 1100, 220);
-  b6 = new IFButton("Domino Negro", 1000, 280);
-  b7 = new IFButton("Domino Blanco", 1100, 280);
-  b8 = new IFButton("Naipes Negro", 1100, 340);
-  b9 = new IFButton("Naipes Color", 1000, 340);
-  b10 = new IFButton("Original", 1000, 400);
+  t = new IFTextField("Text Field", lineaX1, lineaY7, 200);
+  l = new IFLabel("Resolución, Se recomienda un rango 3-15\nDefault=8", lineaX1, lineaY7-30);
+  t1 = new IFTextField("Text Field", lineaX1, lineaY8, 200);
+  l1 = new IFLabel("Texto(Filtro Texto)", lineaX1, lineaY8-20);
+  b0 = new IFButton("M con Color", lineaX1, lineaY1);
+  b1 = new IFButton("M en Gris", lineaX2, lineaY1);
+  b2 = new IFButton("Letras Gris", lineaX1, lineaY2);
+  b3 = new IFButton("Letras Color", lineaX2, lineaY2);
+  b4 = new IFButton("Letras ByN", lineaX1, lineaY3);
+  b5 = new IFButton("Texto", lineaX2, lineaY3);
+  b6 = new IFButton("Domino Negro", lineaX1, lineaY4);
+  b7 = new IFButton("Domino Blanco", lineaX2, lineaY4);
+  b8 = new IFButton("Naipes Negro", lineaX2, lineaY5);
+  b9 = new IFButton("Naipes Color", lineaX1, lineaY5);
+  b10 = new IFButton("Original", lineaX1, lineaY6);
   
   c.add(t);
   c.add(l);
@@ -80,7 +90,7 @@ void draw() {
   if(imageSelected){ 
   img = loadImage(path_imagen);
   imagen = new Imagen(img, width ,height);
-  image(img, 0, 0,width-400,height);
+  image(img, 0, 0,img.width,height);
   } 
 }
 

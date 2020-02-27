@@ -91,7 +91,7 @@ public class Imagen{
     if(resolucion == 0)resolucion=this.resolucion;
     PFont mono = createFont("Courier", resolucion + 2);
     textFont(mono);
-    String letters = "MN@#$o;:,. ";
+    String letters = "MNH#QUAD0Y2$%;. ";
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
@@ -116,7 +116,7 @@ public class Imagen{
   
     PFont mono = createFont("Courier", resolucion + 2);
     textFont(mono);
-    String letters = "MN@#$o;:,. ";
+    String letters = "MNH#QUAD0Y2$%;. ";
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
@@ -144,7 +144,7 @@ public class Imagen{
   
     PFont mono = createFont("Courier", resolucion + 2);
     textFont(mono);
-    String letters = "MN@#$o;:,. ";
+    String letters = "MNH#QUAD0Y2$%;. ";
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
@@ -197,7 +197,9 @@ public void texto(String string_res,String txt){
      if(resolucion == 0)resolucion=this.resolucion;
       PFont mono = createFont("lasvbld_.TTF", resolucion + 2);
       textFont(mono);
-      String letters = "lkjihXWURQOLFEDCHBA";
+      //String letters = "lkjihXWURQOLFEDCHBA";  
+      String letters = "0123456";
+    
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
@@ -224,7 +226,7 @@ public void texto(String string_res,String txt){
   
     PFont mono = createFont("lasvwd__.TTF", resolucion + 2);
       textFont(mono);  
-     String letters = "ABHCDEFLOQRUWXhijkl ";
+     String letters = "654321";
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
@@ -252,7 +254,7 @@ if(resolucion == 0)resolucion=this.resolucion;
        
       PFont mono = createFont("Playcrds.TTF", resolucion + 2);
       textFont(mono);
-     String letters = "MLKJFEDCBA ";
+     String letters = "MLKJIHGFEDCBA";
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
@@ -280,7 +282,7 @@ if(resolucion == 0)resolucion=this.resolucion;
   
       PFont mono = createFont("Playcrds.TTF", resolucion + 2);
       textFont(mono);
-     String letters = "MLKJFEDCBA ";
+     String letters = "MLKJIHGFEDCBA";
     for (int i = 0; i < 256; i++) {
       int index = int(map(i, 0, 256, 0, letters.length()));
       ascii[i] = letters.charAt(index);
