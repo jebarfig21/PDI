@@ -16,7 +16,8 @@ void setup() {
   background(250);
   fullScreen();
   int lineaX1=int(width*.83); 
-  int lineaX2=int(width*.88);
+  int lineaX2=lineaX1+100;
+  int largo = 100;
   int lineaY1=int(height*.15);
   int lineaY2=int(height*.18);
   int lineaY3=int(height*.21);
@@ -32,17 +33,17 @@ void setup() {
   l = new IFLabel("Resolución, Se recomienda un rango 3-15\nDefault=8", lineaX1, lineaY7-30);
   t1 = new IFTextField("Text Field", lineaX1, lineaY8, 200);
   l1 = new IFLabel("Texto(Filtro Texto)", lineaX1, lineaY8-20);
-  b0 = new IFButton("M con Color", lineaX1, lineaY1);
-  b1 = new IFButton("M en Gris", lineaX2, lineaY1);
-  b2 = new IFButton("Letras Gris", lineaX1, lineaY2);
-  b3 = new IFButton("Letras Color", lineaX2, lineaY2);
-  b4 = new IFButton("Letras ByN", lineaX1, lineaY3);
-  b5 = new IFButton("Texto", lineaX2, lineaY3);
-  b6 = new IFButton("Domino Negro", lineaX1, lineaY4);
-  b7 = new IFButton("Domino Blanco", lineaX2, lineaY4);
-  b8 = new IFButton("Naipes Negro", lineaX2, lineaY5);
-  b9 = new IFButton("Naipes Color", lineaX1, lineaY5);
-  b10 = new IFButton("Original", lineaX1, lineaY6);
+  b0 = new IFButton("M con Color", lineaX1, lineaY1,largo);
+  b1 = new IFButton("M en Gris", lineaX2, lineaY1,largo);
+  b2 = new IFButton("Letras Gris", lineaX1, lineaY2,largo);
+  b3 = new IFButton("Letras Color", lineaX2, lineaY2,largo);
+  b4 = new IFButton("Letras ByN", lineaX1, lineaY3,largo);
+  b5 = new IFButton("Texto", lineaX2, lineaY3,largo);
+  b6 = new IFButton("Domino Negro", lineaX1, lineaY4,largo);
+  b7 = new IFButton("Domino Blanco", lineaX2, lineaY4,largo);
+  b8 = new IFButton("Naipes Negro", lineaX2, lineaY5,largo);
+  b9 = new IFButton("Naipes Color", lineaX1, lineaY5,largo);
+  b10 = new IFButton("Original", lineaX1, lineaY6,largo);
   
   c.add(t);
   c.add(l);
