@@ -26,13 +26,9 @@ public class Imagen{
     
   }*/
   
-  public void writeOnImage(String txt, String tamTxt,float alpha,int x ,int y){
+  public void writeOnImage(String txt, int tamText,float alpha,int x ,int y){
     background(250);
-    int tamText = 32; 
-    if(tamTxt!=""){
-     tamText = int(tamTxt);}
-   if(tamText == 0)tamText=int(lienso.width*.10);
-  
+   
     PFont mono = createFont("Courier", tamText);
     textFont(mono);
     lienso.beginDraw();
@@ -61,7 +57,6 @@ public class Imagen{
             
               
             if(red(c)>blue(c)+5 ){
-              
               if(gris<171){
                  img.pixels[i]=color(blue(c),blue(c),green(c));
                 }else{
