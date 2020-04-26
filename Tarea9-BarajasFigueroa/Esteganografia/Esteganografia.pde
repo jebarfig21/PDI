@@ -1,6 +1,8 @@
 import interfascia.*;
 import controlP5.*;
-
+import java.net.URISyntaxException;
+import java.net.URI;
+ 
 PGraphics lienso;
 PImage img;
 boolean imageSelected = false; 
@@ -8,7 +10,6 @@ boolean textSelected = false;
 String path_imagen="";
 String path_texto="";
 Imagen imagen; 
-
 //ControlP5
 ControlP5 controlP5;
 ListBox listArchivo, listProcesar, listAyuda;
@@ -173,7 +174,9 @@ void controlEvent(ControlEvent theEvent) {
   //MENU AYUDA//    
   if(theEvent.getLabel()=="Ayuda"){
     if(theEvent.getValue()==0.0){//Mostrar PDF
-        link("file://"+dataPath("manual.pdf"));
+  
+    link("file://"+dataPath("manual.pdf"));
+    launch(dataPath("manual.pdf"));
       }
         
     if(theEvent.getValue()==1.0){ //Creditos
