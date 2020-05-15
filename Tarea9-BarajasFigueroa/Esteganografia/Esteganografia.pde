@@ -50,7 +50,7 @@ void setup() {
   controlP5 = new ControlP5(this);
 
   //Añadir elementos de la interfaz gráfica
-  listArchivo  = controlP5.addListBox("Archivo", 10, 0 , anchoListasMenu, altoListasMenu)
+  listArchivo  = controlP5.addListBox("Archivo", 10, 0 , anchoListasMenu, int(alturaMenu+75))
     .setItemHeight(15)
     .setBarHeight(int(height*.1))
     .addItem("Leer Imagen",0)
@@ -63,7 +63,7 @@ void setup() {
     .setColorForeground(menuMarcado)
     .setOpen(false);
     
-   listProcesar  = controlP5.addListBox("Procesar",  separacionListasMenu, 0 , anchoListasMenu,altoListasMenu)
+   listProcesar  = controlP5.addListBox("Procesar",  separacionListasMenu, 0 , anchoListasMenu,int(alturaMenu+30))
     .setItemHeight(15)
     .setBarHeight(int(height*.1))
     .addItem("Encriptar Texto",0)
@@ -73,7 +73,7 @@ void setup() {
     .setColorForeground(menuMarcado)
     .setOpen(false);
     
-    listAyuda  = controlP5.addListBox("Ayuda",  separacionListasMenu*2 , 0 , anchoListasMenu, altoListasMenu)
+    listAyuda  = controlP5.addListBox("Ayuda",  separacionListasMenu*2 , 0 , anchoListasMenu, int(alturaMenu+30))
      .setItemHeight(15)
      .setBarHeight(int(height*.1))
      .addItem("Manual",0)
@@ -112,16 +112,19 @@ void draw() {
     imagen = new Imagen(img);
   }
   if(img!=null){
-    lienso= createGraphics(img.width,img.height,JAVA2D);
+    lienso= createGraphics(int(width*.52),int(height*.7),JAVA2D);
     lienso.beginDraw();
-    lienso.image(img, 0, 0,img.width,img.height);
+    lienso.background(255);
+    lienso.image(img, 0, 0,lienso.width,lienso.height);
     lienso.endDraw();
-    image(lienso,width*.1,altura,img.width,img.height); 
+    image(lienso,width*.1,altura,lienso.width,lienso.height); 
    }
+   
 }
   
 void controlEvent(ControlEvent theEvent) {
   if(theEvent.getLabel()=="Archivo"){
+     
     if(theEvent.getValue()==0.0)   //Leer Imagen
         selectInput("Seleccione una imagen:", "imageSelected");
         
@@ -159,8 +162,8 @@ void controlEvent(ControlEvent theEvent) {
       imageSelected = false;
       input.clear();
       if(mensaje.trim().equals(imagen.desencriptar().trim()))
-        output.setText("El texto \n"+mensaje + "fue cifrado con exito");
-      else{output.setText("Hubo un error, por favor vuelva a");}
+        output.setText("El texto: \n\n"+mensaje + "\n\nFUE OCULTADO CON EXITO");
+      else{output.setText("Puede que su texto no se haya guardado correcamente, tal vez usó caracteres no aceptados");}
         
     }
       
@@ -174,9 +177,7 @@ void controlEvent(ControlEvent theEvent) {
   //MENU AYUDA//    
   if(theEvent.getLabel()=="Ayuda"){
     if(theEvent.getValue()==0.0){//Mostrar PDF
-  
-    link("file://"+dataPath("manual.pdf"));
-    launch(dataPath("manual.pdf"));
+      launch(dataPath("manual.pdf"));
       }
         
     if(theEvent.getValue()==1.0){ //Creditos
@@ -228,7 +229,8 @@ void guardarImagen(File selection) {
     println("El usuario no selecciono nigun archivo o cerró la ventana");
   } else {
     println("El usuario sleecciono el siguiente archivo para guardar la imagen" + selection.getAbsolutePath());
-    lienso.save(selection.getAbsolutePath());  
+    img.save(selection.getAbsolutePath()+".bmp");
+    output.setText("Imagen fuardad con exito");
   }
 }
 
@@ -241,8 +243,9 @@ void guardarTexto(File selection) {
     println("Ventana Cerrada o usuario canceló");
   } else {
     println("El usuario seleccionó guardar texto en : " + selection.getAbsolutePath());
-    outputTxt = createWriter(selection.getAbsolutePath());
+    outputTxt = createWriter(selection.getAbsolutePath()+".txt");
     outputTxt.print(output.getText());
     outputTxt.close();
+    output.setText("Texto guardado con exito");
   }
 }
