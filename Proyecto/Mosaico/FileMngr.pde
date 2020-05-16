@@ -14,30 +14,7 @@ public class FileMngr{
      
    }
   
-  /*
-  *Funcion que crea un hashTable del archivo fileName de la clase
-  */
-  public Hashtable<Integer, PImage> crearHash() {
-      //BufferedReader reader = createReader(this.fileName);
-      reader     = createReader(this.fileName);
-      Hashtable<Integer, PImage> colores = new  Hashtable <Integer, PImage>() ;
-      String line = null;
-      try {
-        while ((line = reader.readLine()) != null) {
-        String[] pieces = split(line, ",");
-        int colorImagen  = int(pieces[0]);
-        PImage imagenActual = loadImage(pieces[1]);
-        colores.put(colorImagen,imagenActual);
-      }
-      
-      reader.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-       }
-       return colores;
-   }
-
-  public String[] crearArchivo() {
+  public String crearArchivo() {
     File file = new File(this.directory);
     output     = createWriter(this.fileName);
     String names[] = file.list();
@@ -47,9 +24,11 @@ public class FileMngr{
         println(rutaImg); 
         output.println(rutaImg+","+clrImagen);
       }
+      
       output.flush();
       output.close();
-    return names; 
+      File salida = new File(this.fileName);
+    return salida.getAbsolutePath();
   }
 
 
@@ -69,4 +48,5 @@ public class FileMngr{
      rojo/=dimension;verde/=dimension; azul/=dimension;
      return color(rojo,verde,azul);
     }
+    
 }
